@@ -1,9 +1,11 @@
 ﻿using CommonCode.GRPC;
 using Grpc.Core;
+using Grpc.Net.Client;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,13 +15,16 @@ namespace BenchMarkApplication
 {
     public class GRPCClient
     {
-        private readonly Channel channel;
+        private readonly ChannelBase channel;
         private readonly MeteoriteLandingsServiceClient client;
-        private static readonly HttpClient httpClient = new HttpClient();
+        private static readonly HttpClient httpClient = new HttpClient()
+        {
+            DefaultRequestVersion = HttpVersion.Version20
+        };
 
         public GRPCClient()
         {
-            channel = new Channel("localhost:5067", ChannelCredentials.Insecure);
+            channel = GrpcChannel.ForAddress("https://localhost:7056");
             client = new MeteoriteLandingsServiceClient(channel);
         }
 
@@ -55,7 +60,7 @@ namespace BenchMarkApplication
             httpClient.DefaultRequestHeaders.Accept.Clear();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            return await httpClient.GetStringAsync("http://localhost:5067/api/getversion");
+            return await httpClient.GetStringAsync("https://localhost:7056/api/getversion");
         }
 
         public async Task<string> PostLargePayloadAsyncViaApi(MeteoriteLandingList meteoriteLandings)
@@ -63,7 +68,7 @@ namespace BenchMarkApplication
             httpClient.DefaultRequestHeaders.Accept.Clear();
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var response = await httpClient.PostAsJsonAsync("http://localhost:5067/api/postlargepayload", meteoriteLandings);
+            var response = await httpClient.PostAsJsonAsync("https://localhost:7056/api/postlargepayload", meteoriteLandings);
 
             return await response.Content.ReadAsStringAsync();
         }

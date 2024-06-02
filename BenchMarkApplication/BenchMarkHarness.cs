@@ -21,7 +21,7 @@ namespace BenchMarkApplication
         readonly RESTClient restClient = new RESTClient();
         readonly GRPCClient grpcClient = new GRPCClient();
 
-        //[Benchmark]
+        [Benchmark]
         public async Task RestGetSmallPayloadAsync()
         {
             for (int i = 0; i < IterationCount; i++)
@@ -30,7 +30,7 @@ namespace BenchMarkApplication
             }
         }
 
-        //[Benchmark]
+        [Benchmark]
         public async Task RestGetLargePayloadAsync()
         {
             for (int i = 0; i < IterationCount; i++)
@@ -57,7 +57,7 @@ namespace BenchMarkApplication
             }
         }
 
-        //[Benchmark]
+        [Benchmark]
         public async Task GrpcGetSmallPayloadAsync()
         {
             for (int i = 0; i < IterationCount; i++)
@@ -66,7 +66,7 @@ namespace BenchMarkApplication
             }
         }
 
-        //[Benchmark]
+        [Benchmark]
         public async Task GrpcStreamLargePayloadAsync()
         {
             for (int i = 0; i < IterationCount; i++)
@@ -75,7 +75,7 @@ namespace BenchMarkApplication
             }
         }
 
-        //[Benchmark]
+        [Benchmark]
         public async Task GrpcGetLargePayloadAsListAsync()
         {
             for (int i = 0; i < IterationCount; i++)

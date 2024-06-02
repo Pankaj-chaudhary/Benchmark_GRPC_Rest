@@ -35,5 +35,5 @@ app.MapPost("/largepayload", ([FromBody] IEnumerable<MeteoriteLanding> meteorite
 })
 .WithName("PostLargePayload")
 .WithOpenApi();
-
+app.UseHsts();
 app.Run();
